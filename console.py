@@ -17,18 +17,23 @@ class HBNBCommand(cmd.Cmd):
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
+    types = {
+             'number_rooms': int,
+             'number_bathrooms': int,
+             'max_guest': int, 'price_by_night': int,
+             'city_id': str, 'latitude': float,
+             'longitude': float, 'user_id': str,
+             'first_name': str, 'last_name': str,
+             'description': str, 'email': str,
+             'password': str, 'state_id': str, 'name': str,
+             'text': str, 'amenity_ids': list, 'place_id': str
+             }
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -37,7 +42,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -115,16 +119,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        lst = args.split(" ")
+        if not lst[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif lst[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[lst[0]]()
+        dic = {}
+        for i in range(1, len(lst)):
+            part = lst[i].split("=")
+            key = part[0].strip('"')
+            value = part[1].strip('"')
+            if key in HBNBCommand.types:
+                value = HBNBCommand.types[key](value)
+            if (isinstance(value, str)):
+                value = value.replace("_", " ")
+            dic[key] = value
+        for k, v in dic.items():
+            setattr(new_instance, k, v)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +335,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
