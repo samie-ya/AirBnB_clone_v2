@@ -17,6 +17,7 @@ class HBNBCommand(cmd.Cmd):
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
     types = {
              'number_rooms': int,
              'number_bathrooms': int,
@@ -28,6 +29,7 @@ class HBNBCommand(cmd.Cmd):
              'password': str, 'state_id': str, 'name': str,
              'text': str, 'amenity_ids': list, 'place_id': str
              }
+
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
@@ -127,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[lst[0]]()
-        dic = {}
+        new_dic = {}
         for i in range(1, len(lst)):
             part = lst[i].split("=")
             key = part[0].strip('"')
@@ -136,8 +138,8 @@ class HBNBCommand(cmd.Cmd):
                 value = HBNBCommand.types[key](value)
             if (isinstance(value, str)):
                 value = value.replace("_", " ")
-            dic[key] = value
-        for k, v in dic.items():
+            new_dic[key] = value
+        for k, v in new_dic.items():
             setattr(new_instance, k, v)
         storage.save()
         print(new_instance.id)

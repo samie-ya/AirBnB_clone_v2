@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage"""
+"""This module defines a class to manage file storage for hbnb clone"""
 import json
 
 
@@ -13,11 +13,11 @@ class FileStorage:
         if cls:
             new_dict = {}
             for key, value in FileStorage.__objects.items():
-                k = key.split(".")[0]
-                if (cls.__name__ == k):
+                if (cls.__name__ == key.split(".")[0]):
                     new_dict[key] = value
             return new_dict
-        return FileStorage.__objects
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -57,8 +57,9 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """This function will delete a given instance"""
-        for key, value in list(FileStorage.__objects.items()):
-            if (obj == value):
-                del FileStorage.__objects[key]
-        self.save()
+        """This function deletes obj from __objects"""
+        if obj:
+            for key, value in list(FileStorage.__objects.items()):
+                if (value == obj):
+                    del FileStorage.__objects[key]
+            self.save()
