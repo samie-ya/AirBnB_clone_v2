@@ -1,25 +1,12 @@
 #!/usr/bin/python3
-"""
-reviews module
-"""
-
-from models import base_model
+""" RNB project """
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
 
 
-class Review(base_model.BaseModel):
-    """
-    class for all reviews
-    """
-
-    place_id = ""
-    user_id = ""
-    text = ""
-
-    def __init__(self, *args, **kwargs):
-        """constructor method for all cities
-
-           Args:
-               args (tuple): This will not be taken into consideration
-               kwargs (dict): This will contain the result of to_dict()
-        """
-        super().__init__(self, *args, **kwargs)
+class Review(BaseModel, Base):
+    """ This class craetes review """
+    __tablename__ = "reviews"
+    place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+    text = Column(String(1024), nullable=False)

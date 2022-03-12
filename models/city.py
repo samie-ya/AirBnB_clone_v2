@@ -1,24 +1,13 @@
 #!/usr/bin/python3
-"""
-cities module
-"""
+""" City Module for HBNB project """
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 
-from models import base_model
 
-
-class City(base_model.BaseModel):
-    """
-    class for all cities
-    """
-
-    state_id = ""
-    name = ""
-
-    def __init__(self, *args, **kwargs):
-        """constructor method for all cities
-
-           Args:
-               args (tuple): This will not be taken into consideration
-               kwargs (dict): This will contain the result of to_dict()
-        """
-        super().__init__(self, *args, **kwargs)
+class City(BaseModel, Base):
+    """ This creates a class called city """
+    __tablename__ = "cities"
+    name = Column(String(128), nullable=False)
+    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+    places = relationship("Place", cascade="all, delete", backref="cities")
