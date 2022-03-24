@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # This script will sets up your web servers for the deployment of web_static
-if [ ! sudo which nginx > /dev/null 2>&1 ];
+if ! sudo command nginx > /dev/null ;
 then
    sudo apt-get update
    sudo apt-get -y install nginx
@@ -27,7 +27,7 @@ if [ ! -d "/data/web_static/releases/test/" ];
 then
     sudo mkdir /data/web_static/releases/test/
 fi
-echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html > /dev/null 2&>1
+sudo echo "Holberton School" | sudo tee /data/web_static/releases/test/index.html
 if [ -L "/data/web_static/current" ];
 then
     sudo unlink /data/web_static/current
