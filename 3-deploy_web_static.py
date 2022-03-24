@@ -2,8 +2,9 @@
 """This function will depoly all the other functions"""
 
 from fabric.api import env
-from 1-pack_web_static import do_pack
-from 2-do_deploy_web_static import do_deploy
+do_pack = __import__('1-pack_web_static').do_pack
+do_dep = __import__('2-do_deploy_web_static').do_deploy
+
 
 env.hosts = ['ubuntu@34.148.148.119', 'ubuntu@44.200.78.83']
 
