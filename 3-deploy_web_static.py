@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This function will depoly all the other functions"""
-from fabric.api import local
+from fabric.api import *
+from fabric.operations import run, put
 from datetime import datetime
 import os
 
