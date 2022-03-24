@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """This function will depoly all the other functions"""
-
-
 from fabric.api import local
 from datetime import datetime
 import os
+
+env.hosts = ['ubuntu@34.148.148.119', 'ubuntu@44.200.78.83']
 
 
 def do_pack():
