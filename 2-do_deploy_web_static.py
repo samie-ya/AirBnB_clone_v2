@@ -5,8 +5,7 @@ from fabric.api import *
 from fabric.operations import run, put
 import os
 
-env.user = 'ubuntu'
-env.hosts = ['34.148.148.119', '44.200.78.83']
+env.hosts = ['ubuntu@34.148.148.119', 'ubuntu@44.200.78.83']
 
 
 def do_deploy(archive_path):
@@ -25,5 +24,3 @@ def do_deploy(archive_path):
         run("rm -rf /data/web_static/current")
         run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(new))
-    else:
-        return False
