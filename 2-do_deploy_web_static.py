@@ -3,10 +3,10 @@
 
 from fabric.api import *
 from fabric.operations import run, put
-from datetime import datetime
 import os
 
-env.hosts = ['ubuntu@34.148.148.119', 'ubuntu@44.200.78.83']
+env.user = 'ubuntu'
+env.hosts = ['34.148.148.119', '44.200.78.83']
 
 
 def do_deploy(archive_path):
