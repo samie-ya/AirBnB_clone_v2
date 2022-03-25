@@ -34,5 +34,5 @@ then
 fi
 sudo ln -s /data/web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-sudo sed -i -e "s+:80 default_server;+:80 default_server;\n\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n+" /etc/nginx/sites-available/default
+sudo sed -i -e "s+:80 default_server;+:80 default_server;\n\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n+" /etc/nginx/sites-enabled/default
 sudo service nginx restart
