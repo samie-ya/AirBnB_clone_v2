@@ -27,12 +27,12 @@ if [ ! -d "/data/web_static/releases/test/" ];
 then
     sudo mkdir /data/web_static/releases/test/
 fi
-printf "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>\n" | sudo tee /data/web_static/releases/test/index.html > /dev/null
+printf "<html>\n  <head>\n  </head>\n  <body>\n  </body>\n</html>\n" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 if [ -L "/data/web_static/current" ];
 then
     sudo unlink /data/web_static/current
 fi
 sudo ln -s /data/web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-sudo sed -i -e "s+:80 default_server;+:80 default_server;\n\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n+" /etc/nginx/sites-enabled/default
+sudo sed -i -e "s+:80 default_server;+:80 default_server;\n\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n+" /etc/nginx/sites-enabled/default
 sudo service nginx restart
