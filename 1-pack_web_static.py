@@ -23,7 +23,7 @@ def do_pack():
         local("tar -cvzf versions/web_static_{}.tgz web_static"
               .format(today.strftime("%Y%m%d%H%M%S")))
         if ("versions/web_static_{}.tgz"
-            .format(today.strftime("%Y%m%d%H%M%S"))):
+           .format(today.strftime("%Y%m%d%H%M%S"))):
             return ("versions/web_static_{}.tgz"
                     .format(today.strftime("%Y%m%d%H%M%S")))
         else:
