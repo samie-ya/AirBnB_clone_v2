@@ -1,58 +1,66 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""Ths will create class BaseModel that defines all common attributes
+/methods for other classes"""
 import uuid
-from datetime import datetime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime
-
-Base = declarative_base()
+from datetime import datetime as date
+from models import storage
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    """This is the class base model"""
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
-        if not kwargs:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+        """This is initialization of the class BaseModel
+
+        Args:
+            *args (tuple): This argument takes non-keyword arguments
+            **kwargs (dic): This argument takes keyworded argumemnts
+        """
+        self.id = str(uuid.uuid4())
+        self.created_at = date.now()
+        self.updated_at = date.now()
+        if len(kwargs) != 0:
+            for key, value in kwargs.items():
+                if key == "updated_at":
+                    setattr(self, key, self.updated_at.strptime(value,
+                            "%Y-%m-%dT%H:%M:%S.%f"))
+                elif key == "created_at":
+                    setattr(self, key, self.created_at.strptime(value,
+                            "%Y-%m-%dT%H:%M:%S.%f"))
+                elif key != "__class__":
+                    setattr(self, key, value)
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            storage.new(self)
 
     def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        """This will be the string representation of class name, the id,
+           and dictionary when print or str is iused with the instance
+
+        Returns:
+            The string representation of class name, id and dictionary
+        """
+        return "[" + self.__class__.__name__ + "]" + " (" + self.id + ") \
+" + str(self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.new(self)
+        """This function will update the public attribute update_at with the
+           current time"""
+        self.updated_at = date.now()
         storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        if ('_sa_instance_state' in self.__dict__):
-            del self.__dict__['_sa_instance_state']
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        """This function will return a dictionary containing all key/value
+           of dict
 
-    def delete(self):
-        """This function deletes the current instance from the storage"""
-        storage.delete(self)
+        Returns:
+            The modified dictionary that contains the values of self.__dict__
+        """
+        x = {}
+        x.update(self.__dict__)
+        for key, value in x.items():
+            if key == "created_at":
+                x[key] = self.created_at.isoformat()
+            if key == "updated_at":
+                x[key] = self.updated_at.isoformat()
+        x["__class__"] = self.__class__.__name__
+        return x
