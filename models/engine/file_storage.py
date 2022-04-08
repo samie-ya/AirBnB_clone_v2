@@ -22,11 +22,12 @@ class FileStorage:
             The content of FileStorage.__objects
         """
         if cls:
-            new_dic = {}
+            new_dict = {}
             for key, value in FileStorage.__objects.items():
-                if (cls == type(value).__name__):
-                    setattr(new_dic, key, value)
-                    return new_dic
+                k = key.split(".")[0]
+                if (cls.__name__ == k):
+                    new_dict[key] = value
+            return new_dict
         return FileStorage.__objects
 
     def new(self, obj):
