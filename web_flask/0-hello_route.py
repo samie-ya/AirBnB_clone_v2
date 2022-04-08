@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 @app.route("/", strict_slashes=False)
 def hello():
+    """This function will use url with slash and give the result"""
     return "Hello HBNB!"
 
 
