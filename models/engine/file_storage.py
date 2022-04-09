@@ -59,22 +59,35 @@ class FileStorage:
         from models.amenity import Amenity
         from models.place import Place
         from models.review import Review
+        from datetime import datetime
         classes = {'BaseModel': BaseModel, 'User': User, 'State': State,
                    'City': City, 'Amenity': Amenity, 'Place': Place,
                    'Review': Review}
         if os.path.isfile(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r", encoding='utf-8') as f:
                 dic = {}
+                new_value = {}
                 dic.update(json.loads(f.read()))
                 for key, value in dic.items():
                     for k, v in value.items():
                         for a, b in classes.items():
                             if v == a:
-                                FileStorage.__objects[key] = b(**value)
+                                if k == "updated_at":
+                                    new_value[k] = datetime.strptime(value[k],
+                                                                     "%Y-%m-%dT%H:\
+                                                                     %M:%S.%f")
+                                elif k == "created_at":
+                                    new_value[k] = datetime.strptime(value[k],
+                                                                     "%Y-%m-%dT%H:\
+                                                                     %M:%S.%f")
+                                elif k != "__class__":
+                                    setattr(new_value, k, v)
+                                FileStorage.__objects[key] = new_value
 
     def delete(self, obj=None):
         """This function will delete the given object from fileobjects"""
-        for key, value in list(FileStorage.__objects.items()):
-            if (obj == value):
-                del FileStorage.__objects[key]
-        self.save()
+        if obj:
+            for key, value in list(FileStorage.__objects.items()):
+                if (obj == value):
+                    del FileStorage.__objects[key]
+            self.save()
