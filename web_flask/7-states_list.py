@@ -18,7 +18,7 @@ def states():
 
 
 @app.teardown_appcontext
-def close(exception):
+def close():
     """This function closes the application"""
     storage.close()
 
