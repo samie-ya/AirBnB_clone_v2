@@ -11,14 +11,14 @@ for state_id, state in storage.all(State).items():
     new_list.append(state)
 
 
-@app.route("/states_list", strict_slashes=False)
+@app.route("/states_list")
 def states():
     """This function will display html that conatins states"""
     return render_template('7-states_list.html', name=new_list)
 
 
 @app.teardown_appcontext
-def close():
+def close(exception):
     """This function closes the application"""
     storage.close()
 
