@@ -10,11 +10,8 @@ app = Flask(__name__)
 def states():
     """This function will display html that conatins states"""
     from models.state import State
-    from models.city import City
-    city_dict = storage.all(City)
     state_dict = storage.all(State)
-    return render_template('8-cities_by_states.html', states=state_dict,
-                           cities=city_dict)
+    return render_template('8-cities_by_states.html', states=state_dict)
 
 
 @app.teardown_appcontext
