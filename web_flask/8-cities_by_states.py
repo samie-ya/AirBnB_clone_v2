@@ -2,7 +2,6 @@
 """This script will create 5 simple flask web application"""
 from models import storage
 from flask import Flask, render_template
-import os
 app = Flask(__name__)
 
 
