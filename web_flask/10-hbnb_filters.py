@@ -10,10 +10,12 @@ def states():
     """This function will display html that conatins our web static"""
     from models.state import State
     from models.amenity import Amenity
+    from models.city import City
+    city_dict = storage.all(City)
     state_dict = storage.all(State)
     amenity_dict = storage.all(Amenity)
     return render_template('10-hbnb_filters.html', states=state_dict,
-                           amenities=amenity_dict)
+                           amenities=amenity_dict, cities=city_dict)
 
 
 @app.teardown_appcontext
