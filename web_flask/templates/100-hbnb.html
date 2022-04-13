@@ -49,7 +49,7 @@
 			<section class="places">
 				<h1>Places</h1>
 				<article>
-				{% for place in places.values()|sort(attribute='name') %}
+				{%- for place in places.values()|sort(attribute='name') %}
 					<div class="headline">
 						<h2>{{ place.name }}</h2>
 						<div class="price_by_night">{{ place.price_by_night }}</div>
@@ -68,13 +68,13 @@
 							<p>{{ place.number_bathrooms }}</p>
 						</div>
 					</div>
-					{% for user in users.values()|sort(attribute='name') %}
-						{% if user.id == place.user_id %}
+					{%- for user in users.values()|sort(attribute='name') %}
+						{%- if user.id == place.user_id %}
 						<div class="user"><b>Owner</b>: {{ user.first_name }} {{ user.last_name }}</div>
-						{% endif %}
-					{% endfor %}
+						{%- endif %}
+					{%- endfor %}
 					<div class="description">{{ place.description }}</div>
-				{% endfor %}
+				{%- endfor %}
 				</article>
 			</section>
 		</div>
